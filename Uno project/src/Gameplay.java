@@ -38,7 +38,7 @@ public class Gameplay
 		private static void fillDeck()
 			{
 				Cards.main(null);
-				System.out.println("Plz run");
+				
 				for(int i = 0; i < Cards.card.size(); i++)
 					{
 						deck.add(Cards.card.get(i));
@@ -208,6 +208,7 @@ public class Gameplay
 										System.out.println("You draw a card");
 										hand.add(deck.get(0));
 										deck.remove(0);
+										bot1Turn = true;
 										playing = false;
 									}
 						
@@ -217,7 +218,7 @@ public class Gameplay
 										int chosenCardType = hand.get(choosingCard - 1).getNumber();
 								
 								
-										if(chosenCardType == 12)
+										if((chosenCardType == 12 || chosenCardColor.equals(pile.get(pile.size() - 1).getColor())))
 											{
 												pile.add(hand.get(choosingCard - 1));
 												System.out.println("You played a " + hand.get(choosingCard - 1 ).getColor() + " " + hand.get(choosingCard - 1).getSymbol());
@@ -228,10 +229,22 @@ public class Gameplay
 												botHand.add(deck.get(0));
 												deck.remove(0);
 												bot1Turn = false;
+												bot2Turn = true;
+												playing = false;
+											}
+										
+										else if((chosenCardType == 10 || chosenCardColor.equals(pile.get(pile.size() - 1).getColor())))
+											{
+												pile.add(hand.get(choosingCard - 1));
+												System.out.println("You played a " + hand.get(choosingCard - 1 ).getColor() + " " + hand.get(choosingCard - 1).getSymbol());
+												System.out.println("You have skipped bot 1");
+												hand.remove(choosingCard - 1);
+												bot1Turn = false;
+												bot2Turn = true;
 												playing = false;
 											}
 								
-										else if(chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) || chosenCardType == pile.get(pile.size() - 1).getNumber())
+										else if(chosenCardType < 10 && chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) || chosenCardType == pile.get(pile.size() - 1).getNumber())
 											{
 												pile.add(hand.get(choosingCard - 1));
 												System.out.println("You played a " + hand.get(choosingCard - 1 ).getColor() + " " + hand.get(choosingCard - 1).getSymbol());
@@ -256,8 +269,9 @@ public class Gameplay
 							{
 								winner();
 							}
+						System.out.println(pile.get(pile.size() - 1).getNumber());
 						break;				
-						
+							
 						
 					} //still have cards
 						
@@ -267,8 +281,9 @@ public class Gameplay
 						for(int i = 0; i <= botHand.size(); i++)
 							{
 								
-								if(botHand.get(i).getNumber() == 12)
+								if((botHand.get(i).getNumber() == 12 || botHand.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())))
 									{
+										timer();
 										pile.add(botHand.get(i));
 										System.out.println("Bot 1 has played a " + botHand.get(i).getColor() + " " + botHand.get(i).getSymbol());
 										System.out.println("Bot 2 drew 2 cards");
@@ -278,10 +293,23 @@ public class Gameplay
 										botHand1.add(deck.get(0));
 										deck.remove(0);
 										bot2Turn = false;
+										bot3Turn = true;
 										break;
 									}
 								
-								else if(botHand.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
+								else if((botHand.get(i).getNumber() == 10 || botHand.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())))
+									{
+										timer();
+										pile.add(botHand.get(i));
+										System.out.println("Bot 1 has played a " + botHand.get(i).getColor() + " " + botHand.get(i).getSymbol());
+										System.out.println("Bot 1 skipped bot 2");
+										botHand.remove(i);
+										bot2Turn = false;
+										bot3Turn = true;
+										break;
+									}
+								
+								else if(botHand.get(i).getNumber() < 10 && botHand.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
 									{
 										timer();
 										pile.add(botHand.get(i));
@@ -296,6 +324,7 @@ public class Gameplay
 										botHand.add(deck.get(0));
 										System.out.println("Bot 1 draws");
 										deck.remove(0);
+										bot2Turn = true;
 										break;
 									}
 								
@@ -307,6 +336,8 @@ public class Gameplay
 								winner();
 								break;
 							}
+						System.out.println("Bot 1 has " + botHand.size() + " cards");
+						System.out.println(pile.get(pile.size() - 1).getNumber());
 						break;
 												
 					} //while bot has cards
@@ -317,8 +348,9 @@ public class Gameplay
 						for(int i = 0; i <= botHand1.size(); i++)
 							{
 								
-								if(botHand1.get(i).getNumber() == 12)
+								if((botHand1.get(i).getNumber() == 12 || botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())))
 									{
+										timer();
 										pile.add(botHand1.get(i));
 										System.out.println("Bot 2 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol());
 										System.out.println("Bot 3 drew 2 cards");
@@ -328,10 +360,23 @@ public class Gameplay
 										botHand2.add(deck.get(0));
 										deck.remove(0);
 										bot3Turn = false;
+										playerTurn = true;
 										break;
 									}
 								
-								else if(botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
+								else if((botHand1.get(i).getNumber() == 10 || botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())))
+									{
+										timer();
+										pile.add(botHand1.get(i));
+										System.out.println("Bot 2 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol());
+										System.out.println("Bot 2 skipped bot 3");
+										botHand1.remove(i);
+										bot3Turn = false;
+										playerTurn = true;
+										break;
+									}
+								
+								else if(botHand1.get(i).getNumber() < 10 && botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
 									{
 										timer();
 										pile.add(botHand1.get(i));
@@ -346,6 +391,7 @@ public class Gameplay
 										botHand1.add(deck.get(0));
 										System.out.println("Bot 2 draws");
 										deck.remove(0);
+										bot3Turn = true;
 										break;
 									}
 								
@@ -356,6 +402,8 @@ public class Gameplay
 							{
 								winner();
 							}
+						System.out.println("Bot 2 has " + botHand1.size() + " cards");
+						System.out.println(pile.get(pile.size() - 1).getNumber());
 						break;
 												
 					} //while bot1 has cards
@@ -366,8 +414,9 @@ public class Gameplay
 						for(int i = 0; i <= botHand2.size(); i++)
 							{
 								
-								if(botHand2.get(i).getNumber() == 12)
+								if((botHand2.get(i).getNumber() == 12 || botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())))
 									{
+										timer();
 										pile.add(botHand2.get(i));
 										System.out.println("Bot 3 has played a " + botHand2.get(i).getColor() + " " + botHand2.get(i).getSymbol());
 										System.out.println("You drew 2 cards");
@@ -377,10 +426,23 @@ public class Gameplay
 										hand.add(deck.get(0));
 										deck.remove(0);
 										playerTurn = false;
+										bot1Turn = true;
 										break;
 									}
 								
-								else if(botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
+								else if((botHand2.get(i).getNumber() == 10 || botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())))
+									{
+										timer();
+										pile.add(botHand2.get(i));
+										System.out.println("Bot 3 has played a " + botHand2.get(i).getColor() + " " + botHand2.get(i).getSymbol());
+										System.out.println("Bot 3 skipped you");
+										botHand2.remove(i);
+										playerTurn = false;
+										bot1Turn = true;
+										break;
+									}
+								
+								else if(botHand2.get(i).getNumber() < 10 && botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
 									{
 										timer();
 										pile.add(botHand2.get(i));
@@ -395,6 +457,7 @@ public class Gameplay
 										botHand2.add(deck.get(0));
 										System.out.println("Bot 3 draws");
 										deck.remove(0);
+										playerTurn = true;
 										break;
 									}
 								
@@ -405,9 +468,12 @@ public class Gameplay
 							{
 								winner();
 							}
+						System.out.println("Bot 3 has " + botHand2.size() + " cards");
 						break;
 												
 					} //while bot2 has cards
+				timer();
+				System.out.println(pile.get(pile.size() - 1).getNumber());
 				
 				if(hand.size() != 0 && botHand.size() != 0 && botHand1.size() != 0 && botHand2.size() != 0)
 					{
@@ -445,7 +511,7 @@ public class Gameplay
 				
 				try
 					{
-						Thread.sleep(500);
+						Thread.sleep(1000);
 					} catch (InterruptedException e)
 					{
 						// TODO Auto-generated catch block
