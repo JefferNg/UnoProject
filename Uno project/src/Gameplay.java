@@ -9,7 +9,6 @@ public class Gameplay
 			{
 				fillDeck();
 				greetUser();
-				chooseGameplay();
 				addingCardsToHand();
 				playGame();			
 			}
@@ -19,26 +18,21 @@ public class Gameplay
 
 		static Scanner userInput = new Scanner(System.in);
 		static String name;
-		static int numberOfPlayers;
-		static int numberOfBots;
-		static int typeOfGameplay;
-		static int modifier;
-		static ArrayList<String> gameRules = new ArrayList<String>();
 		static ArrayList<CardType> playerHand = new ArrayList<CardType>();
 		static ArrayList<CardType> deck = new ArrayList<CardType>();
 		static ArrayList<CardType> pile = new ArrayList<CardType>();
-		static ArrayList<CardType> botHand = new ArrayList<CardType>();
 		static ArrayList<CardType> botHand1 = new ArrayList<CardType>();
 		static ArrayList<CardType> botHand2 = new ArrayList<CardType>();
-		static String[] order = new String[4];
+		static ArrayList<CardType> botHand3 = new ArrayList<CardType>();
 		static boolean playerTurn = true;
 		static boolean bot1Turn = true;
 		static boolean bot2Turn = true;
 		static boolean bot3Turn = true;
-		static boolean playerReverse;
-		static boolean bot1Reverse;
-		static boolean bot2Reverse;
-		static boolean bot3Reverse;
+		static boolean playerReverse = false;
+		static boolean bot1Reverse = false;
+		static boolean bot2Reverse = false;
+		static boolean bot3Reverse = false;
+		static int amountOfReverse = 0;
 		
 		private static void fillDeck()
 			{
@@ -54,99 +48,9 @@ public class Gameplay
 		private static void greetUser()
 			{
 				
-				System.out.println("Welcome to UNO, please input your name to begin");
+				System.out.println("Welcome to UNO, please input your name to begin.");
 				name = userInput.nextLine();
-				
-				
-				
-			}
-
-		private static void chooseGameplay()
-			{
-				
-				System.out.println("Ok, " + name + ", would you like to play single player (which is with bots) or multiplayer (with people around you)?");
-				System.out.println("[1] Single Player");
-				System.out.println("[2] Multiplayer");
-				int amountOfPlayers = userInput.nextInt();
-				
-				if(amountOfPlayers == 2)
-					{
-						System.out.println("How many other players are playing?(1-3)");
-						numberOfPlayers = userInput.nextInt();
-						if(numberOfPlayers >= 1 && numberOfPlayers <= 3)
-							{
-								
-							}
-						else
-							{
-								System.out.println("That is an invalid amount");
-							}
-						
-					}
-				else
-					{
-						numberOfBots = 3;
-					}
-				
-				System.out.println("Cool, would you like to play the original game or would you like to add some house rules?");
-				System.out.println("[1] Orignal");
-				System.out.println("[2] Modify");
-				typeOfGameplay = userInput.nextInt();
-				
-				
-				if(typeOfGameplay == 2)
-					{
-						gameRules.add("Stacking");
-						gameRules.add("7-0 Rule");
-						gameRules.add("Draw Until You Can Play");
-						int i = 1;
-						while(modifier != i)
-							{
-						
-						System.out.println("Here are the house rules");
-						
-						for(String s : gameRules)
-							{
-								System.out.println("[" + i + "] " + s);
-								i++;
-							}
-						System.out.println("[" + i + "] Done");
-						
-						modifier = userInput.nextInt();
-								
-						if(modifier == 1)
-							{
-								System.out.println("Stacking is a rule where you are allowed to stack your +2 or +4 wild cards and pass it to the next player");
-								System.out.println("Would you like to add this rule?");
-								System.out.println("[1] Yes");
-								System.out.println("[2] No");
-								
-								int confirm = userInput.nextInt();
-								
-								if(confirm == 1)
-									{
-										gameRules.remove(0);
-										i = 1;
-										modifier = 0;
-									}
-								else
-									{
-										modifier = 0;
-										i = 1;
-									}
-								
-								
-								
-							}
-						
-						
-						
-						
-						
-							}
-						
-					}
-				
+				System.out.println("Alright " + name + ", let's start.");
 				
 				
 				
@@ -162,13 +66,13 @@ public class Gameplay
 						playerHand.add(deck.get(i));
 						deck.remove(i);
 						
-						botHand.add(deck.get(i));
-						deck.remove(i);
-						
 						botHand1.add(deck.get(i));
 						deck.remove(i);
 						
 						botHand2.add(deck.get(i));
+						deck.remove(i);
+						
+						botHand3.add(deck.get(i));
 						deck.remove(i);
 						
 						timer();
@@ -183,149 +87,71 @@ public class Gameplay
 				
 				
 			}
-
-		private static void playGame()
+		
+		private static void refillDeck()
 			{
-				order[0] = "player";
-				order[1] = "bot 1";
-				order[2] = "bot 2";
-				order[3] = "bot 3";
-				
-				while(playerHand.size() != 0 || botHand.size() != 0 || botHand1.size() != 0 || botHand2.size() != 0)
+				System.out.println("Refilling deck");
+				for(int i = pile.size(); i > 5; i--)
 					{
-						if(!bot3Reverse && !playerReverse && !bot1Reverse && !bot2Reverse)
-							{
-								for(String n : order)
-									{
-										playerTurn();
-										bot1Turn();
-										bot2Turn();
-										bot3Turn();
-									}
-							}
-						else if(bot1Reverse && (!playerReverse || !bot2Reverse || !bot3Reverse))
-							{
-								
-							}
-						else if(bot2Reverse && (!playerReverse || !bot1Reverse || bot3Reverse))
-							{
-								
-							}
-						else if(bot3Reverse && (!playerReverse || !bot1Reverse || bot2Reverse))
-							{
-								
-							}
-				
+						deck.add(pile.get(i - 1));
+						pile.remove(i - 1);
 					}
 				
-				
-			
-				
-				
+			}
+
+		private static void playGame()
+			{			
+				playerTurn();
+				bot1Turn();
+				bot2Turn();
+				bot3Turn();			
 			}
 
 		private static void bot1Turn()
 			{
-				while(botHand.size() != 0 && bot1Turn)
-					{
-						
-						for(int i = 0; i <= botHand.size(); i++)
-							{
-								
-								if(botHand.get(i).getNumber() == 12 && botHand.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())) && botHand.get(i).getNumber() == 12)
-									{
-										timer();
-										pile.add(botHand.get(i));
-										System.out.println("Bot 1 has played a " + botHand.get(i).getColor() + " " + botHand.get(i).getSymbol());
-										System.out.println("Bot 2 drew 2 cards");
-										botHand.remove(i);
-										botHand1.add(deck.get(0));
-										deck.remove(0);
-										botHand1.add(deck.get(0));
-										deck.remove(0);
-										bot2Turn = false;
-										bot3Turn = true;
-										break;
-									}
-								
-								else if(botHand.get(i).getNumber() == 11 && botHand.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand.get(i).getColor().equals(pile.get(pile.size() - 1)) && botHand.get(i).getNumber() == 11))
-									{
-										timer();
-										pile.add(botHand.get(i));
-										System.out.println("Bot 1 has played a " + botHand.get(i).getColor() + " " + botHand.get(i).getSymbol());
-										botHand.remove(i);
-										bot1Reverse = true;
-										break;
-									}
-								
-								else if(botHand.get(i).getNumber() == 10  && botHand.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand.get(i).getNumber() == 10))
-									{
-										timer();
-										pile.add(botHand.get(i));
-										System.out.println("Bot 1 has played a " + botHand.get(i).getColor() + " " + botHand.get(i).getSymbol());
-										System.out.println("Bot 1 skipped bot 2");
-										botHand.remove(i);
-										bot2Turn = false;
-										bot3Turn = true;
-										break;
-									}
-								
-								else if(botHand.get(i).getNumber() < 10 && botHand.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
-									{
-										timer();
-										pile.add(botHand.get(i));
-										System.out.println("Bot 1 has played a " + botHand.get(i).getColor() + " " + botHand.get(i).getSymbol());
-										botHand.remove(i);
-										bot2Turn = true;
-										break;
-									}
-								else if(i == botHand.size() - 1)
-									{
-										timer();
-										botHand.add(deck.get(0));
-										System.out.println("Bot 1 draws");
-										deck.remove(0);
-										bot2Turn = true;
-										break;
-									}
-								
-							}
-						timer();
-						
-						if(botHand.size() == 0)
-							{
-								winner();
-								break;
-							}
-						System.out.println("Bot 1 has " + botHand.size() + " cards");
-						System.out.println(pile.get(pile.size() - 1).getNumber());
-						break;
-												
-					} //while bot has cards
-				
-			}
-
-		private static void bot2Turn()
-			{
-				while(botHand1.size() != 0 && bot2Turn)
+				while(botHand1.size() != 0 && bot1Turn)
 					{
 						
 						for(int i = 0; i <= botHand1.size(); i++)
 							{
 								
-								if(botHand1.get(i).getNumber() == 12  && botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand1.get(i).getNumber() == 12))
+								if(botHand1.get(i).getNumber() == 12 && botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())) && botHand1.get(i).getNumber() == 12)
 									{
 										timer();
 										pile.add(botHand1.get(i));
-										System.out.println("Bot 2 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol());
-										System.out.println("Bot 3 drew 2 cards");
+										System.out.println("Bot 1 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol() + ".");
+										if(amountOfReverse % 2 == 1)
+											{
+												System.out.println("You drew 2 cards.");
+												botHand1.remove(i);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerTurn = false;
+											}
+										else
+											{
+												System.out.println("Bot 2 drew 2 cards.");
+												botHand1.remove(i);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												bot2Turn = false;
+											}
+										bot3Turn = true;
+										break;
+									}
+								
+								else if((botHand1.get(i).getNumber() == 11 && botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber()) || (botHand1.get(i).getColor().equals(pile.get(pile.size() - 1)) && botHand1.get(i).getNumber() == 11))
+									{
+										timer();
+										pile.add(botHand1.get(i));
+										System.out.println("Bot 1 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol() + ".");
 										botHand1.remove(i);
-										botHand2.add(deck.get(0));
-										deck.remove(0);
-										botHand2.add(deck.get(0));
-										deck.remove(0);
-										bot3Turn = false;
-										playerTurn = true;
+										bot1Reverse = true;
+										amountOfReverse++;
 										break;
 									}
 								
@@ -333,11 +159,20 @@ public class Gameplay
 									{
 										timer();
 										pile.add(botHand1.get(i));
-										System.out.println("Bot 2 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol());
-										System.out.println("Bot 2 skipped bot 3");
-										botHand1.remove(i);
-										bot3Turn = false;
-										playerTurn = true;
+										System.out.println("Bot 1 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol() + ".");
+										if(amountOfReverse % 2 == 1)
+											{
+												System.out.println("Bot 1 skipped you.");
+												botHand1.remove(i);
+												playerTurn = false;
+											}
+										else
+											{
+												System.out.println("Bot 1 skipped Bot 2.");
+												botHand1.remove(i);
+												bot2Turn = false;
+											}
+										bot3Turn = true;
 										break;
 									}
 								
@@ -345,18 +180,20 @@ public class Gameplay
 									{
 										timer();
 										pile.add(botHand1.get(i));
-										System.out.println("Bot 2 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol());
+										System.out.println("Bot 1 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol() + ".");
 										botHand1.remove(i);
-										bot3Turn = true;
+										bot2Turn = true;
+										playerTurn = true;
 										break;
 									}
 								else if(i == botHand1.size() - 1)
 									{
 										timer();
 										botHand1.add(deck.get(0));
-										System.out.println("Bot 2 draws");
+										System.out.println("Bot 1 draws.");
 										deck.remove(0);
-										bot3Turn = true;
+										bot2Turn = true;
+										playerTurn = true;
 										break;
 									}
 								
@@ -366,18 +203,30 @@ public class Gameplay
 						if(botHand1.size() == 0)
 							{
 								winner();
+								break;
 							}
-						System.out.println("Bot 2 has " + botHand1.size() + " cards");
-						System.out.println(pile.get(pile.size() - 1).getNumber());
+						System.out.println("Bot 1 has " + botHand1.size() + " cards.");
+						if(deck.size() < 5)
+							{
+								refillDeck();
+							}
+						if(amountOfReverse % 2 == 1 && playerTurn)
+							{
+								playerTurn();
+							}
+						else if(amountOfReverse % 2 == 1)
+							{
+								bot3Turn();
+							}
 						break;
 												
-					} //while bot1 has cards
+					} //while bot has cards
 				
 			}
 
-		private static void bot3Turn()
+		private static void bot2Turn()
 			{
-				while(botHand2.size() != 0 && bot3Turn)
+				while(botHand2.size() != 0 && bot2Turn)
 					{
 						
 						for(int i = 0; i <= botHand2.size(); i++)
@@ -387,15 +236,39 @@ public class Gameplay
 									{
 										timer();
 										pile.add(botHand2.get(i));
-										System.out.println("Bot 3 has played a " + botHand2.get(i).getColor() + " " + botHand2.get(i).getSymbol());
-										System.out.println("You drew 2 cards");
+										System.out.println("Bot 2 has played a " + botHand2.get(i).getColor() + " " + botHand2.get(i).getSymbol() + ".");
+										if(amountOfReverse % 2 == 1)
+											{
+												System.out.println("Bot 1 drew 2 cards.");
+												botHand2.remove(i);
+												botHand1.add(deck.get(0));
+												deck.remove(0);
+												botHand1.add(deck.get(0));
+												deck.remove(0);
+												bot1Turn = false;
+											}
+										else
+											{
+												System.out.println("Bot 3 drew 2 cards.");
+												botHand2.remove(i);
+												botHand3.add(deck.get(0));
+												deck.remove(0);
+												botHand3.add(deck.get(0));
+												deck.remove(0);
+												bot3Turn = false;
+											}
+										playerTurn = true;
+										break;
+									}
+								
+								else if((botHand2.get(i).getNumber() == 11 && botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber()) || (botHand2.get(i).getColor().equals(pile.get(pile.size() - 1)) && botHand2.get(i).getNumber() == 11))
+									{
+										timer();
+										pile.add(botHand2.get(i));
+										System.out.println("Bot 2 has played a " + botHand2.get(i).getColor() + " " + botHand2.get(i).getSymbol() + ".");
 										botHand2.remove(i);
-										playerHand.add(deck.get(0));
-										deck.remove(0);
-										playerHand.add(deck.get(0));
-										deck.remove(0);
-										playerTurn = false;
-										bot1Turn = true;
+										bot2Reverse = true;
+										amountOfReverse++;
 										break;
 									}
 								
@@ -403,11 +276,20 @@ public class Gameplay
 									{
 										timer();
 										pile.add(botHand2.get(i));
-										System.out.println("Bot 3 has played a " + botHand2.get(i).getColor() + " " + botHand2.get(i).getSymbol());
-										System.out.println("Bot 3 skipped you");
-										botHand2.remove(i);
-										playerTurn = false;
-										bot1Turn = true;
+										System.out.println("Bot 2 has played a " + botHand2.get(i).getColor() + " " + botHand2.get(i).getSymbol() + ".");
+										if(amountOfReverse % 2 == 1)
+											{
+												System.out.println("Bot 2 skipped Bot 1.");
+												botHand2.remove(i);
+												bot1Turn = false;
+											}
+										else
+											{
+												System.out.println("Bot 2 skipped Bot 3.");
+												botHand2.remove(i);
+												bot3Turn = false;
+											}
+										playerTurn = true;
 										break;
 									}
 								
@@ -415,18 +297,20 @@ public class Gameplay
 									{
 										timer();
 										pile.add(botHand2.get(i));
-										System.out.println("Bot 3 has played a " + botHand2.get(i).getColor() + " " + botHand2.get(i).getSymbol());
+										System.out.println("Bot 2 has played a " + botHand2.get(i).getColor() + " " + botHand2.get(i).getSymbol() + ".");
 										botHand2.remove(i);
-										playerTurn = true;
+										bot3Turn = true;
+										bot1Turn = true;
 										break;
 									}
 								else if(i == botHand2.size() - 1)
 									{
 										timer();
 										botHand2.add(deck.get(0));
-										System.out.println("Bot 3 draws");
+										System.out.println("Bot 2 draws.");
 										deck.remove(0);
-										playerTurn = true;
+										bot3Turn = true;
+										bot1Turn = true;
 										break;
 									}
 								
@@ -437,17 +321,145 @@ public class Gameplay
 							{
 								winner();
 							}
-						System.out.println("Bot 3 has " + botHand2.size() + " cards");
+						System.out.println("Bot 2 has " + botHand2.size() + " cards.");
+						if(deck.size() < 5)
+							{
+								refillDeck();
+							}
+						if(amountOfReverse % 2 == 1 && bot1Turn)
+							{
+								bot1Turn();
+							}
+						else if(amountOfReverse % 2 == 1)
+							{
+								playerTurn();
+							}
+						break;
+												
+					} //while bot1 has cards
+				
+			}
+
+		private static void bot3Turn()
+			{
+				while(botHand3.size() != 0 && bot3Turn)
+					{
+						
+						for(int i = 0; i <= botHand3.size(); i++)
+							{
+								
+								if(botHand3.get(i).getNumber() == 12  && botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand3.get(i).getNumber() == 12))
+									{
+										timer();
+										pile.add(botHand3.get(i));
+										System.out.println("Bot 3 has played a " + botHand3.get(i).getColor() + " " + botHand3.get(i).getSymbol() + ".");
+										if(amountOfReverse % 2 == 1)
+											{
+												System.out.println("Bot 2 drew 2 cards.");
+												botHand3.remove(i);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												bot2Turn = false;
+											}
+										else
+											{
+												System.out.println("You drew 2 cards.");
+												botHand3.remove(i);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerTurn = false;
+											}
+										bot1Turn = true;											
+										break;
+									}
+								
+								else if((botHand3.get(i).getNumber() == 11 && botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber()) || (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1)) && botHand3.get(i).getNumber() == 11))
+									{
+										timer();
+										pile.add(botHand3.get(i));
+										System.out.println("Bot 3 has played a " + botHand3.get(i).getColor() + " " + botHand3.get(i).getSymbol() + ".");
+										botHand3.remove(i);
+										bot3Reverse = true;
+										amountOfReverse++;
+										break;
+									}
+								
+								else if(botHand3.get(i).getNumber() == 10  && botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand3.get(i).getNumber() == 10))
+									{
+										timer();
+										pile.add(botHand3.get(i));
+										System.out.println("Bot 3 has played a " + botHand3.get(i).getColor() + " " + botHand3.get(i).getSymbol() + ".");
+										if(amountOfReverse % 2 == 1)
+											{
+												System.out.println("Bot 3 skipped Bot 2.");
+												botHand3.remove(i);
+												bot2Turn = false;
+											}
+										else
+											{
+												System.out.println("Bot 3 skipped you.");
+												botHand3.remove(i);
+												playerTurn = false;
+											}
+										bot1Turn = true;
+										break;
+									}
+								
+								else if(botHand3.get(i).getNumber() < 10 && botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
+									{
+										timer();
+										pile.add(botHand3.get(i));
+										System.out.println("Bot 3 has played a " + botHand3.get(i).getColor() + " " + botHand3.get(i).getSymbol() + ".");
+										botHand3.remove(i);
+										playerTurn = true;
+										bot2Turn = true;
+										break;
+									}
+								else if(i == botHand3.size() - 1)
+									{
+										timer();
+										botHand3.add(deck.get(0));
+										System.out.println("Bot 3 draws.");
+										deck.remove(0);
+										playerTurn = true;
+										bot2Turn = true;
+										break;
+									}
+								
+							}
+						timer();
+						
+						if(botHand3.size() == 0)
+							{
+								winner();
+							}
+						System.out.println("Bot 3 has " + botHand3.size() + " cards.");
 						break;
 												
 					} //while bot2 has cards
 				timer();
-				System.out.println(pile.get(pile.size() - 1).getNumber());
+				if(deck.size() < 5)
+					{
+						refillDeck();
+					}
+				if(amountOfReverse % 2 == 1 && bot2Turn)
+					{
+						bot2Turn();
+					}
+				else if(amountOfReverse % 2 == 1)
+					{
+						bot1Turn();
+					}
 				
-				if(playerHand.size() != 0 && botHand.size() != 0 && botHand1.size() != 0 && botHand2.size() != 0)
+				else if(playerHand.size() != 0 && botHand1.size() != 0 && botHand2.size() != 0 && botHand3.size() != 0)
 					{
 						playGame();
 					}
+				
 				
 			}
 
@@ -464,20 +476,20 @@ public class Gameplay
 							}
 						System.out.println("[" + amountOfCards + "]" + " Draw");
 						
-						System.out.println("The card on top is " + pile.get(pile.size() - 1).getColor() + " " + pile.get(pile.size() - 1).getSymbol());
+						System.out.println("The card on top is " + pile.get(pile.size() - 1).getColor() + " " + pile.get(pile.size() - 1).getSymbol() + ".");
 						
 						while(playing)
 							{
 								int choosingCard = userInput.nextInt();
 						
 						
-						
 								if(choosingCard > playerHand.size())
 									{
-										System.out.println("You draw a card");
+										System.out.println("You draw a card.");
 										playerHand.add(deck.get(0));
 										deck.remove(0);
 										bot1Turn = true;
+										bot3Turn = true;
 										playing = false;
 									}
 						
@@ -490,25 +502,57 @@ public class Gameplay
 										if(chosenCardType == 12 && chosenCardType == pile.get(pile.size() - 1).getNumber() || (chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) && chosenCardType == 12))
 											{
 												pile.add(playerHand.get(choosingCard - 1));
-												System.out.println("You played a " + playerHand.get(choosingCard - 1 ).getColor() + " " + playerHand.get(choosingCard - 1).getSymbol());
-												System.out.println("Bot 1 drew 2 cards");
-												playerHand.remove(choosingCard - 1);
-												botHand.add(deck.get(0));
-												deck.remove(0);
-												botHand.add(deck.get(0));
-												deck.remove(0);
-												bot1Turn = false;
+												System.out.println("You played a " + playerHand.get(choosingCard - 1 ).getColor() + " " + playerHand.get(choosingCard - 1).getSymbol() + ".");
+												if(amountOfReverse % 2 == 1)
+													{
+														System.out.println("Bot 3 drew 2 cards.");
+														playerHand.remove(choosingCard - 1);
+														botHand3.add(deck.get(0));
+														deck.remove(0);
+														botHand3.add(deck.get(0));
+														deck.remove(0);
+														bot3Turn = false;
+													}
+												else
+													{
+														System.out.println("Bot 1 drew 2 cards.");
+														playerHand.remove(choosingCard - 1);
+														botHand1.add(deck.get(0));
+														deck.remove(0);
+														botHand1.add(deck.get(0));
+														deck.remove(0);
+														bot1Turn = false;
+													}
 												bot2Turn = true;
+												playing = false;
+											}
+										
+										else if((chosenCardType == 11 && chosenCardType == pile.get(pile.size() - 1).getNumber()) || (chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) && chosenCardType == 11))
+											{
+												pile.add(playerHand.get(choosingCard - 1));
+												System.out.println("You played a " + playerHand.get(choosingCard - 1 ).getColor() + " " + playerHand.get(choosingCard - 1).getSymbol() + ".");
+												playerHand.remove(choosingCard - 1);
+												playerReverse = true;
+												amountOfReverse++;
 												playing = false;
 											}
 										
 										else if((chosenCardType == 10 && chosenCardType == pile.get(pile.size() - 1).getNumber() || (chosenCardColor.equals(pile.get(pile.size() - 1).getColor())) && chosenCardType == 10))
 											{
 												pile.add(playerHand.get(choosingCard - 1));
-												System.out.println("You played a " + playerHand.get(choosingCard - 1 ).getColor() + " " + playerHand.get(choosingCard - 1).getSymbol());
-												System.out.println("You have skipped bot 1");
-												playerHand.remove(choosingCard - 1);
-												bot1Turn = false;
+												System.out.println("You played a " + playerHand.get(choosingCard - 1 ).getColor() + " " + playerHand.get(choosingCard - 1).getSymbol() + ".");
+												if(amountOfReverse % 2 == 1)
+													{
+														System.out.println("You skipped Bot 3.");
+														playerHand.remove(choosingCard - 1);
+														bot3Turn = false;
+													}
+												else
+													{
+														System.out.println("You skipped Bot 1.");
+														playerHand.remove(choosingCard - 1);
+														bot1Turn = false;
+													}
 												bot2Turn = true;
 												playing = false;
 											}
@@ -516,14 +560,15 @@ public class Gameplay
 										else if(chosenCardType < 10 && chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) || chosenCardType == pile.get(pile.size() - 1).getNumber())
 											{
 												pile.add(playerHand.get(choosingCard - 1));
-												System.out.println("You played a " + playerHand.get(choosingCard - 1 ).getColor() + " " + playerHand.get(choosingCard - 1).getSymbol());
+												System.out.println("You played a " + playerHand.get(choosingCard - 1 ).getColor() + " " + playerHand.get(choosingCard - 1).getSymbol() + ".");
 												playerHand.remove(choosingCard - 1);
 												bot1Turn = true;
+												bot3Turn = true;
 												playing = false;
 											}
 										else
 											{
-												System.out.println("That card won't work, play a different card");
+												System.out.println("That card won't work, play a different card.");
 											}
 						
 									
@@ -538,7 +583,18 @@ public class Gameplay
 							{
 								winner();
 							}
-						System.out.println(pile.get(pile.size() - 1).getNumber());
+						if(deck.size() < 5)
+							{
+								refillDeck();
+							}
+						if(amountOfReverse % 2 == 1 && bot3Turn)
+							{
+								bot3Turn();
+							}
+						else if(amountOfReverse % 2 == 1)
+							{
+								bot2Turn();
+							}
 						break;				
 							
 						
@@ -553,15 +609,15 @@ public class Gameplay
 						{
 							System.out.println("You have won!");
 						}
-					else if(botHand.size() == 0)
+					else if(botHand1.size() == 0)
 						{
 							System.out.println("Bot 1 has won!");
 						}
-					else if(botHand1.size() == 0)
+					else if(botHand2.size() == 0)
 						{
 							System.out.println("Bot 2 has won!");
 						}
-					else if(botHand2.size() == 0)
+					else if(botHand3.size() == 0)
 						{
 							System.out.println("Bot 3 has won!");
 						}
