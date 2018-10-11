@@ -33,6 +33,10 @@ public class Gameplay
 		static boolean bot2Reverse = false;
 		static boolean bot3Reverse = false;
 		static int amountOfReverse = 0;
+		static int randomColor;
+		static int sayUno;
+		static int challengeUno;
+		static boolean possibleToPlay = false;
 		
 		private static void fillDeck()
 			{
@@ -78,13 +82,18 @@ public class Gameplay
 						timer();
 						System.out.print(".");
 					}
-				pile.add(deck.get(0));
-				deck.remove(0);
 				
-				System.out.println("");
+				for(int i = 0; i < deck.size(); i++)
+					{
+						if(deck.get(i).getNumber() < 10)
+							{
+								pile.add(deck.get(i));
+								deck.remove(i);
+								break;
+							}
+					}
 				
-				
-				
+				System.out.println("");					
 				
 			}
 		
@@ -115,7 +124,147 @@ public class Gameplay
 						for(int i = 0; i <= botHand1.size(); i++)
 							{
 								
-								if(botHand1.get(i).getNumber() == 12 && botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())) && botHand1.get(i).getNumber() == 12)
+								if(botHand1.size() == 2 && (botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || botHand1.get(i).getNumber() == 13 || botHand1.get(i).getNumber() == 14))     
+									{
+										sayUno = (int)(Math.random()*4)+1;
+										if(sayUno < 4)
+											{
+												System.out.println("Bot 1: Uno!");
+											}
+										else
+											{
+												challengeUno = (int)(Math.random()*4)+1;
+												if(challengeUno != 1)
+													{
+														if(challengeUno == 4)
+															{
+																System.out.println("You challenged uno on Bot 1.");																
+															}
+														else
+															{
+																System.out.println("Bot " + challengeUno + " challenged Bot 1.");
+															}
+														System.out.println("Bot 1 draws 2 cards.");
+														botHand1.add(deck.get(0));
+														deck.remove(0);
+														botHand1.add(deck.get(0));
+														deck.remove(0);
+														
+													}
+												else
+													{
+														System.out.println("No one challenged Bot 1...");
+													}
+											}
+									}
+								
+								if(botHand1.get(i).getNumber() == 14)
+									{
+										timer();
+										randomColor = (int)(Math.random()*4) + 1;
+										System.out.println("Bot 1 has played a wild +4 card.");
+										
+										if(randomColor == 1)
+											{
+												System.out.println("Bot 1 has chose red.");
+												botHand1.get(i).setColor("Red");
+												pile.add(botHand1.get(i));
+												botHand1.remove(i);
+												
+											}
+										else if(randomColor == 2)
+											{
+												System.out.println("Bot 1 has chose blue.");
+												botHand1.get(i).setColor("Blue");
+												pile.add(botHand1.get(i));
+												botHand1.remove(i);
+											}
+										else if(randomColor == 3)
+											{
+												System.out.println("Bot 1 has chose green.");
+												botHand1.get(i).setColor("Green");
+												pile.add(botHand1.get(i));
+												botHand1.remove(i);
+											}
+										else
+											{
+												System.out.println("Bot 1 has chose yellow.");
+												botHand1.get(i).setColor("Yellow");
+												pile.add(botHand1.get(i));
+												botHand1.remove(i);
+											}
+										
+										if(amountOfReverse % 2 == 1)
+											{
+												System.out.println("You drew 4 cards.");
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerTurn = false;
+											}
+										else
+											{
+												System.out.println("Bot 2 drew 4 cards.");
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												bot2Turn = false;
+											}
+										bot3Turn = true;
+										break;
+									}
+								
+								else if(botHand1.get(i).getNumber() == 13)
+									{
+										timer();
+										randomColor = (int)(Math.random()*4) + 1;
+										System.out.println("Bot 1 has played a wild card.");
+										
+										if(randomColor == 1)
+											{
+												System.out.println("Bot 1 has chose red.");
+												botHand1.get(i).setColor("Red");
+												pile.add(botHand1.get(i));
+												botHand1.remove(i);
+												
+											}
+										else if(randomColor == 2)
+											{
+												System.out.println("Bot 1 has chose blue.");
+												botHand1.get(i).setColor("Blue");
+												pile.add(botHand1.get(i));
+												botHand1.remove(i);
+											}
+										else if(randomColor == 3)
+											{
+												System.out.println("Bot 1 has chose green.");
+												botHand1.get(i).setColor("Green");
+												pile.add(botHand1.get(i));
+												botHand1.remove(i);
+											}
+										else
+											{
+												System.out.println("Bot 1 has chose yellow.");
+												botHand1.get(i).setColor("Yellow");
+												pile.add(botHand1.get(i));
+												botHand1.remove(i);
+											}
+										bot2Turn = true;
+										playerTurn = true;
+										break;
+									}
+								
+								else if(botHand1.get(i).getNumber() == 12 && botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())) && botHand1.get(i).getNumber() == 12)
 									{
 										timer();
 										pile.add(botHand1.get(i));
@@ -152,6 +301,8 @@ public class Gameplay
 										botHand1.remove(i);
 										bot1Reverse = true;
 										amountOfReverse++;
+										bot2Turn = true;
+										playerTurn = true;
 										break;
 									}
 								
@@ -205,7 +356,16 @@ public class Gameplay
 								winner();
 								break;
 							}
-						System.out.println("Bot 1 has " + botHand1.size() + " cards.");
+						
+						if(botHand1.size() > 1)
+							{
+								System.out.println("Bot 1 has " + botHand1.size() + " cards left.");
+							}
+						else
+							{
+								System.out.println("Bot 1 has 1 card left.");
+							}
+						
 						if(deck.size() < 5)
 							{
 								refillDeck();
@@ -220,7 +380,7 @@ public class Gameplay
 							}
 						break;
 												
-					} //while bot has cards
+					} //while bot1 has cards
 				
 			}
 
@@ -232,7 +392,151 @@ public class Gameplay
 						for(int i = 0; i <= botHand2.size(); i++)
 							{
 								
-								if(botHand2.get(i).getNumber() == 12  && botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand2.get(i).getNumber() == 12))
+								if(botHand2.size() == 2 && (botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || botHand2.get(i).getNumber() == 13 || botHand2.get(i).getNumber() == 14))     
+									{
+										sayUno = (int)(Math.random()*4)+1;
+										if(sayUno < 4)
+											{
+												System.out.println("Bot 2: Uno!");
+											}
+										else
+											{
+												challengeUno = (int)(Math.random()*4)+1;
+												if(challengeUno != 2)
+													{
+														if(challengeUno == 4)
+															{
+																System.out.println("You challenged uno on Bot 2.");																
+															}
+														else
+															{
+																System.out.println("Bot " + challengeUno + " challenged Bot 3.");
+															}
+														System.out.println("Bot 2 draws 2 cards.");
+														botHand2.add(deck.get(0));
+														deck.remove(0);
+														botHand2.add(deck.get(0));
+														deck.remove(0);
+														
+													}
+												else
+													{
+														System.out.println("No one challenged Bot 2...");
+													}
+											}
+									}
+								
+								if(botHand2.get(i).getNumber() == 14)
+									{
+										timer();
+										randomColor = (int)(Math.random()*4) + 1;
+										System.out.println("Bot 2 has played a wild +4 card.");
+										
+										if(randomColor == 1)
+											{
+												System.out.println("Bot 2 has chose red.");
+												botHand2.get(i).setColor("Red");
+												pile.add(botHand2.get(i));
+												botHand2.remove(i);
+												
+											}
+										else if(randomColor == 2)
+											{
+												System.out.println("Bot 2 has chose blue.");
+												botHand2.get(i).setColor("Blue");
+												pile.add(botHand2.get(i));
+												botHand2.remove(i);
+											}
+										else if(randomColor == 3)
+											{
+												System.out.println("Bot 2 has chose green.");
+												botHand2.get(i).setColor("Green");
+												pile.add(botHand2.get(i));
+												botHand2.remove(i);
+											}
+										else
+											{
+												System.out.println("Bot 2 has chose yellow.");
+												botHand2.get(i).setColor("Yellow");
+												pile.add(botHand2.get(i));
+												botHand2.remove(i);
+											}
+										
+										if(amountOfReverse % 2 == 1)
+											{
+												System.out.println("Bot 1 drew 4 cards.");
+												botHand1.add(deck.get(0));
+												deck.remove(0);
+												botHand1.add(deck.get(0));
+												deck.remove(0);
+												botHand1.add(deck.get(0));
+												deck.remove(0);
+												botHand1.add(deck.get(0));
+												deck.remove(0);
+												bot1Turn = false;
+											}
+										else
+											{
+												System.out.println("Bot 3 drew 4 cards.");
+												botHand3.add(deck.get(0));
+												deck.remove(0);
+												botHand3.add(deck.get(0));
+												deck.remove(0);
+												botHand3.add(deck.get(0));
+												deck.remove(0);
+												botHand3.add(deck.get(0));
+												deck.remove(0);
+												bot3Turn = false;
+											}
+										playerTurn = true;
+										break;
+									}
+								
+								else if(botHand2.get(i).getNumber() == 13)
+									{
+										timer();
+										randomColor = (int)(Math.random()*4) + 1;
+										System.out.println("Bot 2 has played a wild card.");
+										
+										if(randomColor == 1)
+											{
+												System.out.println("Bot 2 has chose red.");
+												//botHand2.get(i).getColor().equals("Red");
+												botHand2.get(i).setColor("Red");
+												pile.add(botHand2.get(i));
+												botHand2.remove(i);
+												
+											}
+										else if(randomColor == 2)
+											{
+												System.out.println("Bot 2 has chose blue.");
+												//botHand2.get(i).getColor().equals("Blue");
+												botHand2.get(i).setColor("Blue");
+												pile.add(botHand2.get(i));
+												botHand2.remove(i);
+											}
+										else if(randomColor == 3)
+											{
+												System.out.println("Bot 2 has chose green.");
+												//botHand2.get(i).getColor().equals("Green");
+												botHand2.get(i).setColor("Green");
+												pile.add(botHand2.get(i));
+												botHand2.remove(i);
+											}
+										else
+											{
+												System.out.println("Bot 2 has chose yellow.");
+												//botHand2.get(i).getColor().equals("Yellow");
+												botHand2.get(i).setColor("Yellow");
+												pile.add(botHand2.get(i));
+												botHand2.remove(i);
+											}
+										bot3Turn = true;
+										bot1Turn = true;
+										break;
+									}
+								
+								else if(botHand2.get(i).getNumber() == 12  && botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand2.get(i).getNumber() == 12))
 									{
 										timer();
 										pile.add(botHand2.get(i));
@@ -269,6 +573,8 @@ public class Gameplay
 										botHand2.remove(i);
 										bot2Reverse = true;
 										amountOfReverse++;
+										bot1Turn = true;
+										bot3Turn = true;
 										break;
 									}
 								
@@ -321,7 +627,16 @@ public class Gameplay
 							{
 								winner();
 							}
-						System.out.println("Bot 2 has " + botHand2.size() + " cards.");
+						
+						if(botHand2.size() > 1)
+							{
+								System.out.println("Bot 2 has " + botHand2.size() + " cards left.");
+							}
+						else
+							{
+								System.out.println("Bot 2 has 1 card left.");
+							}
+						
 						if(deck.size() < 5)
 							{
 								refillDeck();
@@ -334,9 +649,13 @@ public class Gameplay
 							{
 								playerTurn();
 							}
+						else
+							{
+								bot3Turn();
+							}
 						break;
 												
-					} //while bot1 has cards
+					} //while bot2 has cards
 				
 			}
 
@@ -348,7 +667,147 @@ public class Gameplay
 						for(int i = 0; i <= botHand3.size(); i++)
 							{
 								
-								if(botHand3.get(i).getNumber() == 12  && botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand3.get(i).getNumber() == 12))
+								if(botHand3.size() == 2 && (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || botHand3.get(i).getNumber() == 13 || botHand3.get(i).getNumber() == 14))     
+									{
+										sayUno = (int)(Math.random()*4)+1;
+										if(sayUno < 4)
+											{
+												System.out.println("Bot 3: Uno!");
+											}
+										else
+											{
+												challengeUno = (int)(Math.random()*4)+1;
+												if(challengeUno != 3)
+													{
+														if(challengeUno == 4)
+															{
+																System.out.println("You challenged uno on Bot 3.");																
+															}
+														else
+															{
+																System.out.println("Bot " + challengeUno + " challenged Bot 3.");
+															}
+														System.out.println("Bot 3 draws 2 cards.");
+														botHand3.add(deck.get(0));
+														deck.remove(0);
+														botHand3.add(deck.get(0));
+														deck.remove(0);
+														
+													}
+												else
+													{
+														System.out.println("No one challenged Bot 3...");
+													}
+											}
+									}
+								
+								if(botHand3.get(i).getNumber() == 14)
+									{
+										timer();
+										randomColor = (int)(Math.random()*4) + 1;
+										System.out.println("Bot 3 has played a wild +4 card.");
+										
+										if(randomColor == 1)
+											{
+												System.out.println("Bot 3 has chose red.");
+												botHand3.get(i).setColor("Red");
+												pile.add(botHand3.get(i));
+												botHand3.remove(i);
+												
+											}
+										else if(randomColor == 2)
+											{
+												System.out.println("Bot 3 has chose blue.");
+												botHand3.get(i).setColor("Blue");
+												pile.add(botHand3.get(i));
+												botHand3.remove(i);
+											}
+										else if(randomColor == 3)
+											{
+												System.out.println("Bot 3 has chose green.");
+												botHand3.get(i).setColor("Green");
+												pile.add(botHand3.get(i));
+												botHand3.remove(i);
+											}
+										else
+											{
+												System.out.println("Bot 3 has chose yellow.");
+												botHand3.get(i).setColor("Yellow");
+												pile.add(botHand3.get(i));
+												botHand3.remove(i);
+											}
+										
+										if(amountOfReverse % 2 == 1)
+											{
+												System.out.println("Bot 2 drew 4 cards.");
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												botHand2.add(deck.get(0));
+												deck.remove(0);
+												bot2Turn = false;
+											}
+										else
+											{
+												System.out.println("You drew 4 cards.");
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerHand.add(deck.get(0));
+												deck.remove(0);
+												playerTurn = false;
+											}
+										bot1Turn = true;
+										break;
+									}
+								
+								else if(botHand3.get(i).getNumber() == 13)
+									{
+										timer();
+										randomColor = (int)(Math.random()*4) + 1;
+										System.out.println("Bot 3 has played a wild card.");
+										
+										if(randomColor == 1)
+											{
+												System.out.println("Bot 3 has chose red.");
+												botHand3.get(i).setColor("Red");
+												pile.add(botHand3.get(i));
+												botHand3.remove(i);
+												
+											}
+										else if(randomColor == 2)
+											{
+												System.out.println("Bot 3 has chose blue.");
+												botHand3.get(i).setColor("Blue");
+												pile.add(botHand3.get(i));
+												botHand3.remove(i);
+											}
+										else if(randomColor == 3)
+											{
+												System.out.println("Bot 3 has chose green.");
+												botHand3.get(i).setColor("Green");
+												pile.add(botHand3.get(i));
+												botHand3.remove(i);
+											}
+										else
+											{
+												System.out.println("Bot 3 has chose yellow.");
+												botHand3.get(i).setColor("Yellow");
+												pile.add(botHand3.get(i));
+												botHand3.remove(i);
+											}
+										bot2Turn = true;
+										playerTurn = true;
+										break;
+									}
+								
+								else if(botHand3.get(i).getNumber() == 12  && botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand3.get(i).getNumber() == 12))
 									{
 										timer();
 										pile.add(botHand3.get(i));
@@ -385,6 +844,8 @@ public class Gameplay
 										botHand3.remove(i);
 										bot3Reverse = true;
 										amountOfReverse++;
+										playerTurn = true;
+										bot2Turn = true;
 										break;
 									}
 								
@@ -437,10 +898,18 @@ public class Gameplay
 							{
 								winner();
 							}
-						System.out.println("Bot 3 has " + botHand3.size() + " cards.");
+						
+						if(botHand3.size() > 1)
+							{
+								System.out.println("Bot 3 has " + botHand3.size() + " cards left.");
+							}
+						else
+							{
+								System.out.println("Bot 3 has 1 card left.");
+							}
 						break;
 												
-					} //while bot2 has cards
+					} //while bot3 has cards
 				timer();
 				if(deck.size() < 5)
 					{
@@ -475,13 +944,48 @@ public class Gameplay
 								amountOfCards++;
 							}
 						System.out.println("[" + amountOfCards + "]" + " Draw");
+						if(playerHand.size() == 2)
+							{
+						
+								if(playerHand.get(0).getNumber() == 13 || playerHand.get(1).getNumber() == 13 || playerHand.get(0).getNumber() == 14 || playerHand.get(1).getNumber() == 14 || playerHand.get(0).getColor().equals(pile.get(pile.size() - 1).getColor()) || playerHand.get(0).getNumber() == pile.get(pile.size() - 1).getNumber() || playerHand.get(1).getColor().equals(pile.get(pile.size() - 1).getColor()) || playerHand.get(1).getNumber() == pile.get(pile.size() - 1).getNumber())
+									{
+										System.out.println("[" + (amountOfCards + 1) + "] Uno!");
+										possibleToPlay = true;
+									}
+																				
+							}
 						
 						System.out.println("The card on top is " + pile.get(pile.size() - 1).getColor() + " " + pile.get(pile.size() - 1).getSymbol() + ".");
 						
 						while(playing)
 							{
 								int choosingCard = userInput.nextInt();
-						
+								if(playerHand.size() == 2 && possibleToPlay)
+									{
+									if(choosingCard == 4)
+										{
+											System.out.println("UNO!");
+											choosingCard = userInput.nextInt();
+										}
+									else
+										{
+											challengeUno = (int)(Math.random()*4)+1;
+											if(challengeUno < 4)
+												{
+													System.out.println("Bot " + challengeUno + " has challenged you because you didn't call uno.");
+													System.out.println("You draw 2 cards.");
+													playerHand.add(deck.get(0));
+													deck.remove(0);
+													playerHand.add(deck.get(0));
+													deck.remove(0);
+												}
+											else
+												{
+													System.out.println("You're lucky the bots didn't challenged you.");
+												}
+										}
+									
+									}
 						
 								if(choosingCard > playerHand.size())
 									{
@@ -490,16 +994,132 @@ public class Gameplay
 										deck.remove(0);
 										bot1Turn = true;
 										bot3Turn = true;
+										possibleToPlay = false;
 										playing = false;
 									}
+								
 						
 								else
 									{
 										String chosenCardColor = playerHand.get(choosingCard - 1).getColor(); 
 										int chosenCardType = playerHand.get(choosingCard - 1).getNumber();
+										
+										if(chosenCardType == 14)
+											{
+												System.out.println("You played a wild +4 card.");
+												System.out.println("Choose your color");
+												System.out.println("[1] Red");
+												System.out.println("[2] Blue");
+												System.out.println("[3] Green");
+												System.out.println("[4] Yellow");
+												
+												int colorChoice = userInput.nextInt();
+												
+												if(colorChoice == 1)
+													{
+														System.out.println("You chose red");
+														playerHand.get(choosingCard - 1).setColor("Red");;
+														pile.add(playerHand.get(choosingCard - 1));
+														playerHand.remove(choosingCard - 1);
+													}
+												else if(colorChoice == 2)
+													{
+														System.out.println("You chose blue");
+														playerHand.get(choosingCard - 1).setColor("Blue");
+														pile.add(playerHand.get(choosingCard - 1));
+														playerHand.remove(choosingCard - 1);
+													}
+												else if(colorChoice == 3)
+													{
+														System.out.println("You chose green");
+														playerHand.get(choosingCard - 1).setColor("Green");
+														pile.add(playerHand.get(choosingCard - 1));
+														playerHand.remove(choosingCard - 1);
+													}
+												else
+													{
+														System.out.println("You chose yellow");
+														playerHand.get(choosingCard - 1).setColor("Yellow");
+														pile.add(playerHand.get(choosingCard - 1));
+														playerHand.remove(choosingCard - 1);
+													}
+												
+												
+												if(amountOfReverse % 2 == 1)
+													{
+														System.out.println("Bot 3 drew 4 cards.");
+														botHand3.add(deck.get(0));
+														deck.remove(0);
+														botHand3.add(deck.get(0));
+														deck.remove(0);
+														botHand3.add(deck.get(0));
+														deck.remove(0);
+														botHand3.add(deck.get(0));
+														deck.remove(0);
+														bot3Turn = false;
+													}
+												else
+													{
+														System.out.println("Bot 1 drew 4 cards.");
+														botHand1.add(deck.get(0));
+														deck.remove(0);
+														botHand1.add(deck.get(0));
+														deck.remove(0);
+														botHand1.add(deck.get(0));
+														deck.remove(0);
+														botHand1.add(deck.get(0));
+														deck.remove(0);
+														bot1Turn = false;
+													}
+												bot2Turn = true;
+												playing = false;
+											}
+										
+										else if(chosenCardType == 13)
+											{
+												System.out.println("You played a wild card.");
+												System.out.println("Choose your color");
+												System.out.println("[1] Red");
+												System.out.println("[2] Blue");
+												System.out.println("[3] Green");
+												System.out.println("[4] Yellow");
+												
+												int colorChoice = userInput.nextInt();
+												
+												if(colorChoice == 1)
+													{
+														System.out.println("You chose red");
+														playerHand.get(choosingCard - 1).setColor("Red");;
+														pile.add(playerHand.get(choosingCard - 1));
+														playerHand.remove(choosingCard - 1);
+													}
+												else if(colorChoice == 2)
+													{
+														System.out.println("You chose blue");
+														playerHand.get(choosingCard - 1).setColor("Blue");
+														pile.add(playerHand.get(choosingCard - 1));
+														playerHand.remove(choosingCard - 1);
+													}
+												else if(colorChoice == 3)
+													{
+														System.out.println("You chose green");
+														playerHand.get(choosingCard - 1).setColor("Green");
+														pile.add(playerHand.get(choosingCard - 1));
+														playerHand.remove(choosingCard - 1);
+													}
+												else
+													{
+														System.out.println("You chose yellow");
+														playerHand.get(choosingCard - 1).setColor("Yellow");
+														pile.add(playerHand.get(choosingCard - 1));
+														playerHand.remove(choosingCard - 1);
+													}
+												bot1Turn = true;
+												bot3Turn = true;
+												playing = false;
+											}
 								
-								
-										if(chosenCardType == 12 && chosenCardType == pile.get(pile.size() - 1).getNumber() || (chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) && chosenCardType == 12))
+										else if(chosenCardType == 12 && chosenCardType == pile.get(pile.size() - 1).getNumber() || (chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) && chosenCardType == 12))
 											{
 												pile.add(playerHand.get(choosingCard - 1));
 												System.out.println("You played a " + playerHand.get(choosingCard - 1 ).getColor() + " " + playerHand.get(choosingCard - 1).getSymbol() + ".");
@@ -534,6 +1154,8 @@ public class Gameplay
 												playerHand.remove(choosingCard - 1);
 												playerReverse = true;
 												amountOfReverse++;
+												bot1Turn = true;
+												bot3Turn = true;
 												playing = false;
 											}
 										

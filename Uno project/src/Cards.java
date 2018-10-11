@@ -106,6 +106,14 @@ public class Cards
 			card.add(new CardType("Green" , 10 , "skip"));
 			card.add(new CardType("Green" , 11 , "reverse"));
 			card.add(new CardType("Green" , 12 , "+2"));
+			card.add(new CardType("Wild" , 13 , "Card"));
+			card.add(new CardType("Wild" , 13 , "Card"));
+			card.add(new CardType("Wild" , 13 , "Card"));
+			card.add(new CardType("Wild" , 13 , "Card"));
+			card.add(new CardType("Wild" , 14 , "+4"));
+			card.add(new CardType("Wild" , 14 , "+4"));
+			card.add(new CardType("Wild" , 14 , "+4"));
+			card.add(new CardType("Wild" , 14 , "+4"));
 
 			
 		}
