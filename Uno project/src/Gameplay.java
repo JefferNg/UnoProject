@@ -14,7 +14,7 @@ public class Gameplay
 			}
 		
 
-
+		
 
 		static Scanner userInput = new Scanner(System.in);
 		static String name;
@@ -161,6 +161,8 @@ public class Gameplay
 								if(botHand1.get(i).getNumber() == 14)
 									{
 										timer();
+										timer();
+										
 										randomColor = (int)(Math.random()*4) + 1;
 										System.out.println("Bot 1 has played a wild +4 card.");
 										
@@ -227,6 +229,8 @@ public class Gameplay
 								else if(botHand1.get(i).getNumber() == 13)
 									{
 										timer();
+										timer();
+										
 										randomColor = (int)(Math.random()*4) + 1;
 										System.out.println("Bot 1 has played a wild card.");
 										
@@ -267,6 +271,8 @@ public class Gameplay
 								else if(botHand1.get(i).getNumber() == 12 && botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor())) && botHand1.get(i).getNumber() == 12)
 									{
 										timer();
+										timer();
+										
 										pile.add(botHand1.get(i));
 										System.out.println("Bot 1 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol() + ".");
 										if(amountOfReverse % 2 == 1)
@@ -296,6 +302,8 @@ public class Gameplay
 								else if((botHand1.get(i).getNumber() == 11 && botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber()) || (botHand1.get(i).getColor().equals(pile.get(pile.size() - 1)) && botHand1.get(i).getNumber() == 11))
 									{
 										timer();
+										timer(); 
+										
 										pile.add(botHand1.get(i));
 										System.out.println("Bot 1 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol() + ".");
 										botHand1.remove(i);
@@ -309,6 +317,8 @@ public class Gameplay
 								else if(botHand1.get(i).getNumber() == 10  && botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand1.get(i).getNumber() == 10))
 									{
 										timer();
+										timer();
+										
 										pile.add(botHand1.get(i));
 										System.out.println("Bot 1 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol() + ".");
 										if(amountOfReverse % 2 == 1)
@@ -330,6 +340,8 @@ public class Gameplay
 								else if(botHand1.get(i).getNumber() < 10 && botHand1.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand1.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
 									{
 										timer();
+										timer();
+										
 										pile.add(botHand1.get(i));
 										System.out.println("Bot 1 has played a " + botHand1.get(i).getColor() + " " + botHand1.get(i).getSymbol() + ".");
 										botHand1.remove(i);
@@ -340,6 +352,8 @@ public class Gameplay
 								else if(i == botHand1.size() - 1)
 									{
 										timer();
+										timer();
+										
 										botHand1.add(deck.get(0));
 										System.out.println("Bot 1 draws.");
 										deck.remove(0);
@@ -350,6 +364,7 @@ public class Gameplay
 								
 							}
 						timer();
+						//timer();
 						
 						if(botHand1.size() == 0)
 							{
@@ -429,6 +444,7 @@ public class Gameplay
 								if(botHand2.get(i).getNumber() == 14)
 									{
 										timer();
+										timer();
 										randomColor = (int)(Math.random()*4) + 1;
 										System.out.println("Bot 2 has played a wild +4 card.");
 										
@@ -494,6 +510,7 @@ public class Gameplay
 								
 								else if(botHand2.get(i).getNumber() == 13)
 									{
+										timer();
 										timer();
 										randomColor = (int)(Math.random()*4) + 1;
 										System.out.println("Bot 2 has played a wild card.");
