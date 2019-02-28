@@ -1,6 +1,4 @@
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class Gameplay
 	{
@@ -37,6 +35,7 @@ public class Gameplay
 		static int sayUno;
 		static int challengeUno;
 		static boolean possibleToPlay = false;
+		
 		
 		private static void fillDeck()
 			{
@@ -955,6 +954,29 @@ public class Gameplay
 					{
 						int amountOfCards = 1;
 						boolean playing = true;
+						for(int i = 0; i < playerHand.size() - 1; i++)
+							{
+								String co1 = playerHand.get(i).getColor();
+								
+								char temp1 = co1.charAt(0);
+								
+								int minIndex = i;
+								for(int j = i + 1; j < playerHand.size(); j++)
+									{
+										String co2 = playerHand.get(j).getColor();
+										char temp2 = co2.charAt(0);
+										if(temp1 > temp2)
+											{
+												minIndex = j;
+												CardType temp = playerHand.get(i);
+												playerHand.set(i, playerHand.get(minIndex));
+												playerHand.set(minIndex, temp);
+											}
+									}
+								
+								
+							}
+						
 						for(CardType i : playerHand)
 							{
 								System.out.println("[" + amountOfCards + "] "+ i.getColor() + " " + i.getSymbol());
