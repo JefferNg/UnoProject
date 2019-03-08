@@ -414,7 +414,7 @@ public class Gameplay
 						
 						for(int i = 0; i <= botHand2.size(); i++)
 							{
-								
+								//call uno
 								if(botHand2.size() == 2 && (botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || botHand2.get(i).getNumber() == 13 || botHand2.get(i).getNumber() == 14))     
 									{
 										sayUno = (int)(Math.random()*4)+1;
@@ -449,7 +449,7 @@ public class Gameplay
 											}
 									}
 								
-								if(botHand2.get(i).getNumber() == 14)
+								if(botHand2.get(i).getNumber() == 14)  //plays wild +4
 									{
 										timer();
 										timer();
@@ -516,7 +516,7 @@ public class Gameplay
 										break;
 									}
 								
-								else if(botHand2.get(i).getNumber() == 13)
+								else if(botHand2.get(i).getNumber() == 13)  //plays wild
 									{
 										timer();
 										timer();
@@ -561,6 +561,8 @@ public class Gameplay
 										break;
 									}
 								
+								//plays +2 |
+								//         v
 								else if(botHand2.get(i).getNumber() == 12  && botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand2.get(i).getNumber() == 12))
 									{
 										timer();
@@ -590,6 +592,8 @@ public class Gameplay
 										break;
 									}
 								
+								//plays reverse |
+								//              v
 								else if((botHand2.get(i).getNumber() == 11 && botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber()) || (botHand2.get(i).getColor().equals(pile.get(pile.size() - 1)) && botHand2.get(i).getNumber() == 11))
 									{
 										timer();
@@ -603,6 +607,8 @@ public class Gameplay
 										break;
 									}
 								
+								//plays skip |
+								//           v
 								else if(botHand2.get(i).getNumber() == 10  && botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand2.get(i).getNumber() == 10))
 									{
 										timer();
@@ -624,6 +630,8 @@ public class Gameplay
 										break;
 									}
 								
+								//plays number card |
+								//                  v
 								else if(botHand2.get(i).getNumber() < 10 && botHand2.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand2.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
 									{
 										timer();
@@ -691,7 +699,7 @@ public class Gameplay
 						
 						for(int i = 0; i <= botHand3.size(); i++)
 							{
-								
+								//call uno
 								if(botHand3.size() == 2 && (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || botHand3.get(i).getNumber() == 13 || botHand3.get(i).getNumber() == 14))     
 									{
 										sayUno = (int)(Math.random()*4)+1;
@@ -726,7 +734,7 @@ public class Gameplay
 											}
 									}
 								
-								if(botHand3.get(i).getNumber() == 14)
+								if(botHand3.get(i).getNumber() == 14)  //plays wild +4
 									{
 										timer();
 										randomColor = (int)(Math.random()*4) + 1;
@@ -792,7 +800,7 @@ public class Gameplay
 										break;
 									}
 								
-								else if(botHand3.get(i).getNumber() == 13)
+								else if(botHand3.get(i).getNumber() == 13)  //plays wild
 									{
 										timer();
 										randomColor = (int)(Math.random()*4) + 1;
@@ -832,6 +840,8 @@ public class Gameplay
 										break;
 									}
 								
+								//play +2 |
+								//        v
 								else if(botHand3.get(i).getNumber() == 12  && botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand3.get(i).getNumber() == 12))
 									{
 										timer();
@@ -861,6 +871,8 @@ public class Gameplay
 										break;
 									}
 								
+								//play reverse |
+								//             v
 								else if((botHand3.get(i).getNumber() == 11 && botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber()) || (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1)) && botHand3.get(i).getNumber() == 11))
 									{
 										timer();
@@ -874,6 +886,8 @@ public class Gameplay
 										break;
 									}
 								
+								//plays skip |
+								//           v
 								else if(botHand3.get(i).getNumber() == 10  && botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber() || (botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) && botHand3.get(i).getNumber() == 10))
 									{
 										timer();
@@ -895,6 +909,8 @@ public class Gameplay
 										break;
 									}
 								
+								//plays number |
+								//             v
 								else if(botHand3.get(i).getNumber() < 10 && botHand3.get(i).getColor().equals(pile.get(pile.size() - 1).getColor()) || botHand3.get(i).getNumber() == pile.get(pile.size() - 1).getNumber())
 									{
 										timer();
@@ -963,7 +979,7 @@ public class Gameplay
 					{
 						int amountOfCards = 1;
 						boolean playing = true;
-						for(int i = 0; i < playerHand.size() - 1; i++)
+						for(int i = 0; i < playerHand.size() - 1; i++) //sort deck color order
 							{
 								String co1 = playerHand.get(i).getColor();
 								char temp1 = co1.charAt(0);
@@ -1008,7 +1024,7 @@ public class Gameplay
 								int choosingCard = userInput.nextInt();
 								if(playerHand.size() == 2 && possibleToPlay)
 									{
-									if(choosingCard == 4)
+									if(choosingCard == 4) //calls uno
 										{
 											System.out.println("UNO!");
 											choosingCard = userInput.nextInt();
@@ -1033,7 +1049,7 @@ public class Gameplay
 									
 									}
 						
-								if(choosingCard > playerHand.size())
+								if(choosingCard > playerHand.size()) //draws card
 									{
 										System.out.println("You draw a card.");
 										playerHand.add(deck.get(0));
@@ -1050,7 +1066,7 @@ public class Gameplay
 										String chosenCardColor = playerHand.get(choosingCard - 1).getColor(); 
 										int chosenCardType = playerHand.get(choosingCard - 1).getNumber();
 										
-										if(chosenCardType == 14)
+										if(chosenCardType == 14) //play wild +4
 											{
 												System.out.println("You played a wild +4 card.");
 												System.out.println("Choose your color");
@@ -1121,7 +1137,7 @@ public class Gameplay
 												playing = false;
 											}
 										
-										else if(chosenCardType == 13)
+										else if(chosenCardType == 13) //play wild
 											{
 												System.out.println("You played a wild card.");
 												System.out.println("Choose your color");
@@ -1164,7 +1180,9 @@ public class Gameplay
 												bot3Turn = true;
 												playing = false;
 											}
-								
+										
+										//play +2 |
+										//        v
 										else if(chosenCardType == 12 && chosenCardType == pile.get(pile.size() - 1).getNumber() || (chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) && chosenCardType == 12))
 											{
 												pile.add(playerHand.get(choosingCard - 1));
@@ -1193,6 +1211,8 @@ public class Gameplay
 												playing = false;
 											}
 										
+										//play reverse |
+										//             v
 										else if((chosenCardType == 11 && chosenCardType == pile.get(pile.size() - 1).getNumber()) || (chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) && chosenCardType == 11))
 											{
 												pile.add(playerHand.get(choosingCard - 1));
@@ -1205,6 +1225,8 @@ public class Gameplay
 												playing = false;
 											}
 										
+										//play skip |
+										//          v
 										else if((chosenCardType == 10 && chosenCardType == pile.get(pile.size() - 1).getNumber() || (chosenCardColor.equals(pile.get(pile.size() - 1).getColor())) && chosenCardType == 10))
 											{
 												pile.add(playerHand.get(choosingCard - 1));
@@ -1224,7 +1246,9 @@ public class Gameplay
 												bot2Turn = true;
 												playing = false;
 											}
-								
+										
+										//play number |
+										//            v
 										else if(chosenCardType < 10 && chosenCardColor.equals(pile.get(pile.size() - 1).getColor()) || chosenCardType == pile.get(pile.size() - 1).getNumber())
 											{
 												pile.add(playerHand.get(choosingCard - 1));
